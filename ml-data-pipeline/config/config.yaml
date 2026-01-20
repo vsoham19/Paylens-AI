@@ -1,0 +1,12 @@
+data:
+  file_path: data/sample.csv
+
+validation:
+  required_columns:
+    - id
+    - name
+    - age
+    - salary
+
+training:
+  target: salary
