@@ -1,69 +1,26 @@
-📌 ML Data Pipeline
+# PayLens AI — Salary Prediction System
 
-This project is a simple, modular data ingestion and validation pipeline designed to simulate how data is loaded and validated in industry-grade machine learning workflows before model training.
+PayLens AI is a production-ready machine learning pipeline for job market salary estimation.
 
-The goal of this project is to gain hands-on experience with pipeline structuring, separation of concerns, and data validation, which are critical in real-world ML systems.
+## ML Architecture
+The system uses a Scikit-learn based pipeline with robust feature engineering to handle real-world job market data.
 
-📁 Project Structure
-ml-data-pipeline/
-│
-├── data/
-│   └── sample.csv
-│
-├── data_loader/
-│   ├── __init__.py
-│   ├── loader.py
-│   └── validator.py
-│
-└── main.py
+### Target Variable
+- **Target**: `avg_salary` (Average annual salary in $K).
 
-🧩 Component Overview
-sample.csv
+### Data Leakage Control
+To maintain model validity and prevent synthetic performance inflation, the following columns are **explicitly excluded** from model features:
+- `min_salary`: Directly encodes the lower bound of the target.
+- `max_salary`: Directly encodes the upper bound of the target.
+- `Salary Estimate`: Contains raw text strings from which the target is derived.
 
--Contains raw tabular data used as input for the pipeline.
+### Features
+The model utilizes:
+- **Numerical**: Rating, Age of Company, Description Length, Number of Competitors.
+- **Categorical**: Job Simplified, Seniority, Location (State), Industry, Sector, Ownership, Company Size, Revenue.
+- **Binary Skills**: Python, R, Spark, AWS, Excel.
 
-data_loader/__init__.py
-
--Defines the public interface of the data_loader package by exposing the loader and validator functions.
--This enables clean and maintainable imports at the pipeline level.
-
-loader.py
-
--Responsible for data ingestion.
--Checks whether the CSV file exists at the given path
--Loads the file into a pandas DataFrame
--Raises meaningful errors if the file is missing or empty
--This module focuses strictly on I/O handling, without applying any business or schema validation.
-
-validator.py
-
--Responsible for data validation.
-It enforces the following rules:
--Required columns must be present
--No missing or null values are allowed
--age and salary columns must contain numeric values
--If any validation fails, the pipeline raises an error and stops execution.
-
-main.py
-
--Acts as the orchestration layer of the pipeline.
-Execution flow:
--Accepts the input file path
--Loads the data using the loader module
--Validates the data using the validator module
--Confirms successful ingestion when all checks pass
--This structure mirrors how data pipelines are organized in production ML systems.
-
-▶️ How to Run
-
-From the project root:
-
-python main.py
-
-🚀 Key Learnings
-
--Modular pipeline design
--Separation of ingestion and validation logic
--Python package structuring using __init__.py
--Error handling in data workflows
--Foundations of real-world ML data pipelines
+## API Endpoints
+- `GET /metrics`: Returns model performance metadata (RMSE, R²).
+- `POST /ask`: LLM-powered domain insights.
+- `POST /predict`: Salary estimation for a single job profile.
