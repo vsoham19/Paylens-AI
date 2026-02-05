@@ -1,0 +1,32 @@
+data:
+  file_path: data/sample.csv
+
+validation:
+  required_columns:
+    - avg_salary
+    - Rating
+    - age
+    - desc_len
+    - num_comp
+    - job_simp
+    - seniority
+    - job_state
+    - Industry
+    - Sector
+    - Type of ownership
+    - Size
+    - Revenue
+    - python_yn
+    - R_yn
+    - spark
+    - aws
+    - excel
+
+training:
+  target: avg_salary
+  test_size: 0.2
+  model_type: random_forest
+  model_path: artifacts/models/random_forest_regressor.pkl
+
+logging:
+  log_path: artifacts/logs/pipeline.log
